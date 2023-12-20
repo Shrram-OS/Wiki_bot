@@ -1,6 +1,6 @@
 import telebot
 
-bot = telebot.TeleBot(r"6809626698:AAHM0Yv004dSpy5qydfMv9lrBjKzjiXs1k4", parse_mode='html')
+bot = telebot.TeleBot(r"YOUR_TOKEN", parse_mode='html')
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
