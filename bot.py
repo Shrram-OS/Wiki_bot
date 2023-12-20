@@ -1,6 +1,6 @@
 import telebot
 
-bot = telebot.TeleBot(r"YOUR_TOKEN", parse_mode='html')
+bot = telebot.TeleBot(r"6809626698:AAHM0Yv004dSpy5qydfMv9lrBjKzjiXs1k4", parse_mode='html')
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -14,13 +14,13 @@ options.add_argument("--headless")
 
 def wiki(query):
     driver = webdriver.Edge(options=options)
-    driver.get(r"https://uk.wikipedia.org/wiki/%D0%93%D0%BE%D0%BB%D0%BE%D0%B2%D0%BD%D0%B0_%D1%81%D1%82%D0%BE%D1%80%D1%96%D0%BD%D0%BA%D0%B0")
+    driver.get(r"https://www.wikipedia.org/")
 
     search_field = driver.find_element(By.XPATH, '//*[@id="searchInput"]')
 
     search_field.send_keys(query)
 
-    search_button = driver.find_element(By.XPATH, '//*[@id="searchButton"]')
+    search_button = driver.find_element(By.XPATH, '//*[@id="search-form"]/fieldset/button')
 
     search_button.click()
 
@@ -30,21 +30,15 @@ def wiki(query):
 
     if not src: return "Page not found."
 
-    paragraph = src.find(class_="mw-content-ltr")
+    text = src.find(class_="mw-content-ltr mw-parser-output")
+
+    if not text: return "Page not found."
+
+    paragraph = text.find("p", recursive=False)
 
     if not paragraph: return "Page not found."
-
-    paragraph = paragraph.find("p", recursive=False)
-
-    if not paragraph: return "Page not found."
-
-    text = ""
-
-    for tag in paragraph:
-            text += tag.text
-
-    return text
-
+    
+    return paragraph.get_text()
 
 
 @bot.message_handler(content_types=['text'])
